@@ -35,7 +35,22 @@ app.post('/import_csv', upload.single('file'), (req,res) => {
     .on('data', (data) => results.push(data))
     .on('end', () => {
         db.serialize(() => {
-            const stmt = db.prepare("INSERT INTO users (name, email, age) VALUES (?, ?, ?)")
+            const stmt = db.prepare("INSERT INTO users (title,genre,year,country,publishade_at,descripition) VALUES (?, ?, ?, ?, ?, ?)")
+            results.forEach( row => {
+                stmt.run(row.title, row.genre, row.year, row.country, row.published_at, row.description, (err) => {
+                    if (err) {
+                        console.error('Erro ao inserir linha:', err)
+                    }
+                })
+            })
+            stmt.finalize()
+
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    console.error('Erro ao deletar arquivo temporário:', err);
+                  }
+            })
+            res.status(201).send('Arquivo CSV importado e banco de dados populado com sucesso.')
         })
     })
 })
