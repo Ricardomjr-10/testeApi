@@ -24,6 +24,22 @@ db.run(`
     )
     `)
 
+app.post('/import_csv', upload.single('file'), (req,res) => {
+    if(!req.file) {
+        return res.status(400).send('Nenhum arquivo CSV foi encontrado.')
+    }
+
+    const results = []
+    fs.createReadStream(req.file.path)
+    .pipe(csv())
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+        db.serialize(() => {
+            const stmt = db.prepare("INSERT INTO users (name, email, age) VALUES (?, ?, ?)")
+        })
+    })
+})
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`)
 })
