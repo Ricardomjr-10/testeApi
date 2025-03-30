@@ -10,7 +10,7 @@ const db = new sqlite3.Database('./data.db')
 
 app.use(express.json())
 
-const upload = multer({ dest: './uploads' })
+const upload = multer({ dest: 'uploads/' })
 
 db.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -19,12 +19,13 @@ db.run(`
     genre TEXT,
     year INTEGER,
     country TEXT,
-    published_at TEXT,
+    published_at INTEGER,
     description TEXT
     )
     `)
 
 app.post('/import_csv', upload.single('file'), (req, res) => {
+    console.log(req.file)
     if (!req.file) {
         return res.status(400).send('Nenhum arquivo CSV foi encontrado.')
     }
@@ -35,7 +36,7 @@ app.post('/import_csv', upload.single('file'), (req, res) => {
         .on('data', (data) => results.push(data))
         .on('end', () => {
             db.serialize(() => {
-                const stmt = db.prepare("INSERT INTO users (title,genre,year,country,publishade_at,descripition) VALUES (?, ?, ?, ?, ?, ?)")
+                const stmt = db.prepare("INSERT INTO users (title, genre, year, country, published_at, description) VALUES (?, ?, ?, ?, ?, ?)")
                 results.forEach(row => {
                     stmt.run(row.title, row.genre, row.year, row.country, row.published_at, row.description, (err) => {
                         if (err) {
