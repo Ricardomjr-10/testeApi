@@ -59,7 +59,7 @@ app.post('/import_csv', upload.single('file'), (req, res) => {
         });
 })
 
-pp.get('/users', (req, res) => {
+app.get('/users', (req, res) => {
     db.all("SELECT id, title, genre, year, country, published_at, description FROM users", [], (err, rows) => {
       if (err) {
         console.error(err.message);
