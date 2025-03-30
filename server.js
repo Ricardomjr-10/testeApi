@@ -8,6 +8,7 @@ const app = express()
 const port = 3000
 const db = new sqlite3.Database('./data.db')
 
+app.use(express.json())
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`)
