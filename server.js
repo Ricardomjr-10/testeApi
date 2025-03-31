@@ -25,7 +25,6 @@ db.run(`
     `)
 
 app.post('/import_csv', upload.single('file'), (req, res) => {
-    console.log(req.file)
     if (!req.file) {
         return res.status(400).send('Nenhum arquivo CSV foi encontrado.')
     }
@@ -62,14 +61,14 @@ app.post('/import_csv', upload.single('file'), (req, res) => {
 
 app.get('/users', (req, res) => {
     db.all("SELECT id, title, genre, year, country, published_at, description FROM users", [], (err, rows) => {
-      if (err) {
-        console.error(err.message);
-        return res.status(500).json({ error: err.message });
-      }
-      res.json(rows);
+        if (err) {
+            console.error(err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(rows);
     });
-  });
-  
+});
+
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`)
