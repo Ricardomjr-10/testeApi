@@ -1,8 +1,7 @@
 let diamante = '<<.<<..>><>><.>.>.<<.>.<.>>>><>><>>'
 let nd = ''
-let dd = ''
 let cp = 0
-let cc = 0
+
 
 diamante = diamante.replaceAll('.', '')
 
@@ -24,6 +23,6 @@ console.log(`A string original tinha ${quantidade} ocorrências de '<>'.`)
 
 
 console.log(nd)
- console.log(diamante.length)
+ console.log(diamante)
 
 
