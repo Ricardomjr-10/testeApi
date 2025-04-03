@@ -14,5 +14,5 @@ while (i < diamante.length - 1) {
     }
 }
 
-console.log(`A quantidade de diamantes encontrados:`, cDiamantes)
+console.log(`A quantidade de diamantes encontrados:`, cDiamantes,diamante)
 
